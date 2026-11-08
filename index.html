@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海角社区-热门内容聚合与深度讨论_海角社区精选推荐</title>
+    <meta name="description" content="海角社区是一个聚焦热门话题与深度讨论的内容聚合平台。这里汇聚了最新推荐、热门榜单、用户真实评论与专题解析，帮助您快速找到感兴趣的讨论方向，了解社区动态与内容趋势。">
+    <meta name="keywords" content="海角社区,热门讨论,内容推荐,社区精选,深度解析">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --primary: #0f766e;
+            --primary-light: #ccfbf1;
+            --accent: #f59e0b;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* 顶部导航 */
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.92);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+        .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-links a {
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+        .nav-links a:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        /* Banner */
+        .hero {
+            background: linear-gradient(135deg, #f0fdfa 0%, #e2e8f0 100%);
+            padding: 48px 0 40px;
+            border-bottom: 1px solid var(--border);
+        }
+        .hero-content {
+            max-width: 800px;
+        }
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #0f172a;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        .hero h1 span {
+            color: var(--primary);
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            line-height: 1.7;
+            max-width: 650px;
+        }
+        .search-box {
+            display: flex;
+            max-width: 560px;
+            background: #fff;
+            border-radius: 40px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            outline: none;
+            background: transparent;
+        }
+        .search-box button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0 28px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-box button:hover {
+            background: #115e59;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hero-tags a {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .hero-tags a:hover {
+            background: #fff;
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+        /* 通用卡片 */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        /* 区块标题 */
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            margin-top: 48px;
+        }
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+        }
+        .section-header .more-link {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .section-header .more-link:hover {
+            text-decoration: underline;
+        }
+        /* 内容简介区 */
+        .intro-section {
+            margin-top: 40px;
+        }
+        .intro-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .intro-card p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .intro-card p:last-child {
+            margin-bottom: 0;
+        }
+        .intro-card strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        /* 热门推荐网格 */
+        .grid-hot {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .hot-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .hot-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .hot-tag-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .hot-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+        .hot-tag.orange {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .hot-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+        .hot-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 14px;
+            flex: 1;
+        }
+        .hot-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+        }
+        .hot-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        /* 最新更新列表 */
+        .update-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .update-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        .update-item:hover {
+            background: #f1f5f9;
+        }
+        .update-time {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            white-space: nowrap;
+            background: var(--primary-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .update-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #0f172a;
+            flex: 1;
+        }
+        .update-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        /* 分类入口 */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .category-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 18px 16px;
+            text-align: center;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .category-item:hover {
+            border-color: var(--primary);
+            background: #f0fdfa;
+            transform: translateY(-2px);
+        }
+        .cat-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+        .cat-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        .cat-count {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        /* 深度解析 */
+        .deep-analysis {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 36px 40px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .deep-analysis h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #0f172a;
+        }
+        .deep-analysis p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+        .deep-analysis p:last-child {
+            margin-bottom: 0;
+        }
+        /* FAQ手风琴 */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .faq-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 18px 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #0f172a;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .faq-question:hover {
+            background: #f8fafc;
+        }
+        .faq-question::after {
+            content: "+";
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 400;
+        }
+        .faq-answer {
+            padding: 0 24px 20px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            display: none;
+        }
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+        .faq-item.open .faq-question::after {
+            content: "−";
+        }
+        /* 评论 */
+        .comment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .comment-card {
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+        }
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .comment-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0f172a;
+        }
+        .comment-date {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-left: auto;
+        }
+        .comment-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        /* 资讯卡片 */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .news-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 22px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .news-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .news-date {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .news-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0f172a;
+            line-height: 1.4;
+        }
+        .news-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        /* 页脚 */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            margin-top: 64px;
+            padding: 48px 0 32px;
+        }
+        .footer-inner {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 32px;
+        }
+        .footer h4 {
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .footer p {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .footer a {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+        .footer a:hover {
+            color: #ccfbf1;
+        }
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .grid-hot {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+        }
+        @media (max-width: 640px) {
+            .grid-hot {
+                grid-template-columns: 1fr;
+            }
+            .comment-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .hero {
+                padding: 32px 0 24px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .intro-card {
+                padding: 24px 20px;
+            }
+            .deep-analysis {
+                padding: 24px 20px;
+            }
+            .search-box {
+                flex-direction: column;
+                border-radius: var(--radius-sm);
+            }
+            .search-box button {
+                padding: 12px;
+                border-radius: 0;
+            }
+            .update-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .update-desc {
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <div class="logo">
+                <span class="logo-icon">🌊</span>
+                <span>海角社区</span>
+            </div>
+            <div class="nav-links">
+                <a href="/#hot-recommend">热门推荐</a>
+                <a href="/#latest-updates">最新更新</a>
+                <a href="/#category">分类浏览</a>
+                <a href="/#deep-analysis">深度解析</a>
+                <a href="/#faq">常见问题</a>
+                <a href="/#comments">用户评论</a>
+                <a href="/#news">社区资讯</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1><span>海角社区</span> · 热门内容聚合与深度讨论</h1>
+                <p>在这里发现社区里正在被热议的优质内容，从推荐榜单到深度解析，从用户真实评论到专题资讯，海角社区帮你快速锁定值得关注的话题与讨论方向。</p>
+                <div class="search-box">
+                    <input type="text" placeholder="搜索话题、推荐或用户...">
+                    <button>搜索</button>
+                </div>
+                <div class="hero-tags">
+                    <a href="/#hot-recommend">热门推荐</a>
+                    <a href="/#latest-updates">最新更新</a>
+                    <a href="/#deep-analysis">深度解析</a>
+                    <a href="/#news">社区资讯</a>
+                    <a href="/#faq">常见问题</a>
+                    <a href="/#comments">用户评论</a>
+                    <a href="/#category">分类导航</a>
+                    <a href="/#intro">社区简介</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 内容简介 -->
+        <section id="intro" class="intro-section">
+            <div class="section-header">
+                <h2>关于海角社区</h2>
+            </div>
+            <div class="intro-card">
+                <p><strong>海角社区</strong>是一个以热门话题与深度讨论为核心的内容聚合平台。无论你是想了解最近大家在聊什么，还是希望找到某一类内容的集中入口，这里都能提供清晰的浏览路径。社区汇聚了来自不同兴趣领域的推荐内容、用户评论与编辑解析，帮助你在信息过载的环境中快速定位有价值的信息。</p>
+                <p>海角社区的内容覆盖多个方向，包括热门推荐、最新动态、分类精选以及深度专题。对于喜欢追更和关注社区趋势的用户来说，这里提供了一个方便收藏和反复浏览的页面结构。同时，社区内的评论与问答模块也让你能够看到真实用户的观点碰撞，从而对内容有更立体的理解。</p>
+                <p>如果你是第一次来到海角社区，建议从热门推荐和最新更新两个板块开始浏览，再结合深度解析和FAQ进一步了解社区的内容取向。无论你是想消磨时间、寻找灵感，还是希望参与讨论，海角社区都值得加入你的收藏夹。</p>
+            </div>
+        </section>
+
+        <!-- 热门推荐 -->
+        <section id="hot-recommend">
+            <div class="section-header">
+                <h2>热门内容推荐</h2>
+                <a href="/#latest-updates" class="more-link">查看最新更新 →</a>
+            </div>
+            <div class="grid-hot">
+                <div class="hot-card">
+                    <div class="hot-tag-row">
+                        <span class="hot-tag">社区精选</span>
+                        <span class="hot-tag orange">热议中</span>
+                    </div>
+                    <h3>深夜闲聊：那些让你反复回味的讨论</h3>
+                    <p>海角社区里有一类帖子总能引发共鸣——它们未必有标准答案，却让人忍不住一读再读。本期精选整理了几条高赞讨论，关于生活、选择与遗憾。</p>
+                    <div class="hot-meta">
+                        <span>🔥 2.3k 热度</span>
+                        <span>💬 156 评论</span>
+                    </div>
+                </div>
+                <div class="hot-card">
+                    <div class="hot-tag-row">
+                        <span class="hot-tag">趋势观察</span>
+                        <span class="hot-tag orange">新上榜</span>
+                    </div>
+                    <h3>本周社区话题趋势：从碎片到系统</h3>
+                    <p>过去七天，海角社区里关于信息整理和知识管理的讨论明显增多。不少用户分享了自己的笔记方法和工具组合，形成了一股小小的学习热潮。</p>
+                    <div class="hot-meta">
+                        <span>🔥 1.8k 热度</span>
+                        <span>💬 89 评论</span>
+                    </div>
+                </div>
+                <div class="hot-card">
+                    <div class="hot-tag-row">
+                        <span class="hot-tag">深度长文</span>
+                    </div>
+                    <h3>如何在海角社区找到高质量讨论？</h3>
+                    <p>信息密度高的社区需要一点筛选技巧。这篇指南从标签使用、评论区氛围判断到收藏夹管理，给出了一套实用的浏览方法。</p>
+                    <div class="hot-meta">
+                        <span>🔥 1.5k 热度</span>
+                        <span>💬 72 评论</span>
+                    </div>
+                </div>
+                <div class="hot-card">
+                    <div class="hot-tag-row">
+                        <span class="hot-tag">用户推荐</span>
+                        <span class="hot-tag orange">口碑好</span>
+                    </div>
+                    <h3>被低估的宝藏话题：小众爱好者的聚集地</h3>
+                    <p>在海角社区，一些小众话题反而拥有异常活跃的讨论氛围。从手帐排版到旧物改造，这些角落里的热情让人意外又感动。</p>
+                    <div class="hot-meta">
+                        <span>🔥 1.2k 热度</span>
+                        <span>💬 64 评论</span>
+                    </div>
+                </div>
+                <div class="hot-card">
+                    <div class="hot-tag-row">
+                        <span class="hot-tag">编辑推荐</span>
+                    </div>
+                    <h3>社区问答精选：关于习惯养成的真实经验</h3>
+                    <p>没有鸡汤，只有实践。海角社区的用户在问答区分享了各自培养习惯的弯路和心得，其中一些方法朴素却有效。</p>
+                    <div class="hot-meta">
+                        <span>🔥 980 热度</span>
+                        <span>💬 43 评论</span>
+                    </div>
+                </div>
+                <div class="hot-card">
+                    <div class="hot-tag-row">
+                        <span class="hot-tag">专题聚合</span>
+                        <span class="hot-tag orange">持续更新</span>
+                    </div>
+                    <h3>海角社区·城市生活观察笔记</h3>
+                    <p>从通勤路线到街角小店，社区用户用文字记录自己所在城市的细节。这个专题正在持续更新，欢迎你也来分享你眼中的城市。</p>
+                    <div class="hot-meta">
+                        <span>🔥 1.1k 热度</span>
+                        <span>💬 57 评论</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最新更新 -->
+        <section id="latest-updates">
+            <div class="section-header">
+                <h2>最新更新动态</h2>
+                <a href="/#news" class="more-link">社区资讯 →</a>
+            </div>
+            <div class="update-list">
+                <div class="update-item">
+                    <span class="update-time">今天 14:20</span>
+                    <span class="update-title">「深夜闲聊」新讨论帖上线</span>
+                    <span class="update-desc">关于“最近一次被文字打动”的分享</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">今天 11:05</span>
+                    <span class="update-title">社区问答新增 12 条高赞回答</span>
+                    <span class="update-desc">涉及时间管理与精力分配</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">昨天 20:30</span>
+                    <span class="update-title">「城市观察」专题更新：杭州篇</span>
+                    <span class="update-desc">新增 5 篇用户投稿</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">昨天 16:15</span>
+                    <span class="update-title">热门推荐位更换：本周新上榜话题</span>
+                    <span class="update-desc">信息整理与知识管理讨论升温</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">11月5日</span>
+                    <span class="update-title">社区用户突破新里程碑</span>
+                    <span class="update-desc">感谢每一位参与讨论的朋友</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">11月4日</span>
+                    <span class="update-title">深度解析栏目更新：如何判断讨论质量</span>
+                    <span class="update-desc">编辑手记已发布</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">11月3日</span>
+                    <span class="update-title">新增分类「生活记录」</span>
+                    <span class="update-desc">方便浏览日常分享类内容</span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">11月2日</span>
+                    <span class="update-title">评论功能优化：支持按热度排序</span>
+                    <span class="update-desc">提升浏览体验</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类入口 -->
+        <section id="category">
+            <div class="section-header">
+                <h2>按分类浏览海角社区</h2>
+            </div>
+            <div class="category-grid">
+                <a href="/#hot-recommend" class="category-item">
+                    <span class="cat-icon">🔥</span>
+                    <span class="cat-name">热门推荐</span>
+                    <span class="cat-count">128 个话题</span>
+                </a>
+                <a href="/#latest-updates" class="category-item">
+                    <span class="cat-icon">🆕</span>
+                    <span class="cat-name">最新更新</span>
+                    <span class="cat-count">今日 23 条</span>
+                </a>
+                <a href="/#deep-analysis" class="category-item">
+                    <span class="cat-icon">📖</span>
+                    <span class="cat-name">深度解析</span>
+                    <span class="cat-count">36 篇长文</span>
+                </a>
+                <a href="/#faq" class="category-item">
+                    <span class="cat-icon">❓</span>
+                    <span class="cat-name">常见问题</span>
+                    <span class="cat-count">18 个问答</span>
+                </a>
+                <a href="/#comments" class="category-item">
+                    <span class="cat-icon">💬</span>
+                    <span class="cat-name">用户评论</span>
+                    <span class="cat-count">1,240 条</span>
+                </a>
+                <a href="/#news" class="category-item">
+                    <span class="cat-icon">📰</span>
+                    <span class="cat-name">社区资讯</span>
+                    <span class="cat-count">56 篇报道</span>
+                </a>
+                <a href="/#intro" class="category-item">
+                    <span class="cat-icon">🌊</span>
+                    <span class="cat-name">社区简介</span>
+                    <span class="cat-count">了解海角</span>
+                </a>
+                <a href="/#hot-recommend" class="category-item">
+                    <span class="cat-icon">🏷️</span>
+                    <span class="cat-name">标签聚合</span>
+                    <span class="cat-count">89 个标签</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 深度解析正文 -->
+        <section id="deep-analysis">
+            <div class="section-header">
+                <h2>深度解析：海角社区的内容生态与讨论价值</h2>
+            </div>
+            <div class="deep-analysis">
+                <p>海角社区之所以能在众多内容平台中形成自己的辨识度，与其独特的讨论氛围和内容组织方式密不可分。从页面结构上看，社区将热门推荐、最新更新、分类入口和深度解析有机串联，让不同需求的用户都能找到合适的浏览起点。对于初次访问的用户来说，最直观的感受是信息密度较高，但通过合理的栏目划分，阅读压力被有效分散。</p>
+                <p>在内容层面，海角社区的讨论往往带有较强的个人经验和真实感受，而非泛泛而谈的观点搬运。这一点在问答和评论区域尤其明显。用户倾向于分享具体的情境、做法和结果，使得讨论具备可参考性。这种风格也影响了社区的内容筛选逻辑——那些能够引发共鸣或提供新视角的帖子，更容易获得持续的关注和互动。</p>
+                <p>从消费体验来看，海角社区适合碎片化浏览与深度阅读交替进行。最新更新和热门推荐适合快速扫读，了解社区当前的话题风向；而深度解析和长文推荐则适合留出专门的时间细细阅读。社区内链结构清晰，相关栏目之间的跳转自然，方便用户沿着兴趣路径不断扩展浏览范围。对于习惯收藏内容的用户，页面中的多个板块都提供了便捷的入口，便于后续回访。</p>
+                <p>值得注意的是，海角社区并不追求覆盖所有领域，而是聚焦于那些能够产生真实讨论的内容方向。这种克制反而让社区的整体调性更加统一。无论是日常分享、经验交流还是观点碰撞，用户都能感受到一种相对真诚的交流氛围。如果你正在寻找一个既能获取信息又能参与讨论的地方，海角社区提供了一个值得尝试的选择。</p>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq">
+            <div class="section-header">
+                <h2>常见问题</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">海角社区主要包含哪些类型的内容？</div>
+                    <div class="faq-answer">海角社区的内容主要围绕热门话题讨论、用户经验分享、深度解析文章以及社区资讯展开。你可以找到从生活记录到知识管理、从城市观察到小众爱好等多种方向的讨论。页面中的分类入口和标签系统能帮助你快速定位感兴趣的内容类型。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">第一次访问海角社区，建议从哪里开始浏览？</div>
+                    <div class="faq-answer">建议先从「热门推荐」和「最新更新」两个板块入手，它们能让你快速了解社区当前正在讨论什么。之后可以根据兴趣进入「深度解析」阅读长文，或通过「分类浏览」找到特定方向的内容。如果对社区本身好奇，可以先看看「关于海角社区」的简介。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">海角社区的讨论氛围适合新用户参与吗？</div>
+                    <div class="faq-answer">海角社区的讨论整体偏向友好和务实，用户更看重具体经验和真实感受。新用户可以从评论和问答区开始，观察一段时间再参与讨论。社区没有过高的表达门槛，只要言之有物、尊重他人，通常都能获得不错的回应。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">如何在海角社区找到持续更新的专题内容？</div>
+                    <div class="faq-answer">页面中的「最新更新动态」板块会列出近期上线的专题和讨论帖。此外，热门推荐中带有「持续更新」标签的内容也值得关注。你可以将页面加入收藏夹，方便定期回访查看是否有新的内容更新。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">海角社区的内容适合在手机上浏览吗？</div>
+                    <div class="faq-answer">页面已针对移动端进行了适配，导航、卡片和正文在手机屏幕上都能正常阅读。搜索框和分类入口在移动端也保持了良好的可操作性。不过由于内容条目较多，移动端浏览时建议利用分类筛选来缩小范围，以提高阅读效率。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">海角社区与一般内容平台有什么区别？</div>
+                    <div class="faq-answer">海角社区更强调讨论的真实感和内容的可参考性，而不是单纯追求热点覆盖。社区内的推荐和解析往往带有编辑视角，帮助用户理解内容背后的逻辑。同时，用户评论和问答的比重较高，使得浏览过程更像参与一场持续的对话，而非单向的信息接收。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评论 -->
+        <section id="comments">
+            <div class="section-header">
+                <h2>用户评论精选</h2>
+            </div>
+            <div class="comment-grid">
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">海</div>
+                        <span class="comment-name">海边散步</span>
+                        <span class="comment-date">11月6日</span>
+                    </div>
+                    <div class="comment-text">海角社区的热门推荐真的帮我省了不少时间，每次来都能看到一些有意思的讨论，比漫无目的地刷信息流舒服多了。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">阿</div>
+                        <span class="comment-name">阿岛</span>
+                        <span class="comment-date">11月5日</span>
+                    </div>
+                    <div class="comment-text">深度解析栏目写得挺用心的，不是那种水字数文章，能看出编辑自己是有判断的。希望以后多更新一些专题。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">C</div>
+                        <span class="comment-name">Coco_07</span>
+                        <span class="comment-date">11月4日</span>
+                    </div>
+                    <div class="comment-text">分类入口挺好用的，我一般直接点「最新更新」看看今天有什么新帖子。不过有时候更新有点多，看不过来。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">夜</div>
+                        <span class="comment-name">夜航星</span>
+                        <span class="comment-date">11月3日</span>
+                    </div>
+                    <div class="comment-text">评论区有时候比正文还好看，海角社区的用户说话比较实在，不太拐弯抹角，这一点我很喜欢。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">小</div>
+                        <span class="comment-name">小满</span>
+                        <span class="comment-date">11月2日</span>
+                    </div>
+                    <div class="comment-text">第一次来的时候有点懵，信息量好大。后来从「关于海角社区」看起，慢慢就摸清楚结构了。建议新用户也这么干。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">Z</div>
+                        <span class="comment-name">Zeno</span>
+                        <span class="comment-date">10月30日</span>
+                    </div>
+                    <div class="comment-text">城市生活观察那个专题挺有趣的，看到不同人写自己住的地方，有种奇怪的真实感。希望多出一些这样的专题。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">橘</div>
+                        <span class="comment-name">橘猫不胖</span>
+                        <span class="comment-date">10月28日</span>
+                    </div>
+                    <div class="comment-text">FAQ的回答挺实在的，没有那种敷衍的模板话术。不过如果能再多一些关于内容筛选的建议就更好了。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">风</div>
+                        <span class="comment-name">风过无痕</span>
+                        <span class="comment-date">10月26日</span>
+                    </div>
+                    <div class="comment-text">整体体验不错，但有个小建议：热门推荐能不能加个“不感兴趣”的选项？有些话题我确实不太想看。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">蓝</div>
+                        <span class="comment-name">蓝调时刻</span>
+                        <span class="comment-date">10月24日</span>
+                    </div>
+                    <div class="comment-text">在海角社区看到一个关于习惯养成的问答，里面的回答质量很高，直接收藏了。这种内容多来点。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">半</div>
+                        <span class="comment-name">半糖主义</span>
+                        <span class="comment-date">10月22日</span>
+                    </div>
+                    <div class="comment-text">移动端看长文稍微有点累，希望能出个阅读模式什么的。不过整体排版还算干净，不算太影响阅读。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">N</div>
+                        <span class="comment-name">NovaLee</span>
+                        <span class="comment-date">10月20日</span>
+                    </div>
+                    <div class="comment-text">资讯板块更新挺快的，有时候社区里刚讨论起来的话题，过两天就能在资讯里看到整理。有一种被认真对待的感觉。</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-avatar">沉</div>
+                        <span class="comment-name">沉默的螺旋</span>
+                        <span class="comment-date">10月18日</span>
+                    </div>
+                    <div class="comment-text">海角社区不算完美，但能感觉到是在做内容，而不是纯粹做流量。这一点在现在的社区产品里已经很难得了。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 相关资讯 -->
+        <section id="news">
+            <div class="section-header">
+                <h2>社区相关资讯</h2>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-date">2026年11月6日</div>
+                    <h3>海角社区热门推荐机制调整，强调内容深度</h3>
+                    <p>近期海角社区对热门推荐算法进行了微调，在原有互动数据基础上，增加了对讨论质量和内容完整度的考量。这意味着篇幅扎实、观点清晰的帖子将有更多机会进入推荐位。</p>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">2026年11月4日</div>
+                    <h3>「城市生活观察」专题新增五座城市投稿</h3>
+                    <p>该专题自上线以来持续收到用户投稿。本周新增了杭州、成都、长沙、青岛和大连五个城市的观察笔记，从通勤路线到街边小店，视角丰富。</p>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">2026年11月1日</div>
+                    <h3>社区问答区上线「按热度排序」功能</h3>
+                    <p>为了方便用户快速找到高质量回答，海角社区问答区新增了按热度排序的选项。用户可以在最新回答和热门回答之间自由切换。</p>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">2026年10月28日</div>
+                    <h3>深度解析栏目推出「讨论质量判断指南」</h3>
+                    <p>编辑团队发布了一篇关于如何判断社区讨论质量的指南，从信息密度、来源可靠性和观点平衡性三个维度给出了参考标准，受到用户好评。</p>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">2026年10月25日</div>
+                    <h3>海角社区用户规模突破新节点，交流氛围保持稳定</h3>
+                    <p>随着新用户的持续加入，社区在保持增长的同时，通过分类引导和评论规范维护了相对友好的讨论环境。运营团队表示将继续关注内容质量。</p>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">2026年10月20日</div>
+                    <h3>「小众爱好」系列专题获得社区月度推荐</h3>
+                    <p>该系列聚焦手帐、旧物改造、模型制作等小众兴趣方向，因其真实细腻的用户分享，被社区编辑部选为十月推荐专题。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div>
+                    <h4>海角社区</h4>
+                    <p>海角社区是一个聚焦热门话题与深度讨论的内容聚合平台。我们致力于为用户提供清晰的浏览路径和真实的讨论氛围，让每一次访问都有所收获。</p>
+                    <p>本站内容由社区用户共同创造，页面呈现仅供浏览参考。</p>
+                </div>
+                <div>
+                    <h4>快速导航</h4>
+                    <a href="/#hot-recommend">热门推荐</a>
+                    <a href="/#latest-updates">最新更新</a>
+                    <a href="/#category">分类浏览</a>
+                    <a href="/#deep-analysis">深度解析</a>
+                    <a href="/#faq">常见问题</a>
+                </div>
+                <div>
+                    <h4>友情链接</h4>
+                    <a href="/#">内容合作</a>
+                    <a href="/#">社区规范</a>
+                    <a href="/#">联系我们</a>
+                    <a href="/#">隐私声明</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 海角社区 · 内容聚合与讨论平台</span>
+                <span>免责声明：页面内容为用户讨论与编辑整理，不构成任何专业建议。</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ 手风琴
+        document.querySelectorAll('.faq-question').forEach(function(q) {
+            q.addEventListener('click', function() {
+                var item = this.parentElement;
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</body>
+  </html>
